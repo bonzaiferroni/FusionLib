@@ -1,0 +1,13 @@
+{
+    "name": "FusionLibTests",
+    "references": [
+        "Unity.TextMeshPro",
+        "FusionLib"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
