@@ -45,7 +45,6 @@ namespace FusionLib.Core
             {
                 var go = pool.Pop();
                 view = go.GetComponent<T>();
-                Debug.Log("found apool guy!");
             }
             else
             {
@@ -71,7 +70,6 @@ namespace FusionLib.Core
                 throw new Exception($"Returned poolmember for unregistered type: {type.Name}");
             _pools[type].Push(poolMember.gameObject);
             poolMember.transform.SetParent(_pooledParent);
-            Debug.Log("returned apool guy!");
         }
     }
 }
