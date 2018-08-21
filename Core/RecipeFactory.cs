@@ -8,19 +8,20 @@ namespace FusionLib.Core
     {
         protected abstract Dictionary<Type, Action<Fusion>> Recipes { get; }
 
-        public Fusion GetView(Type type)
+        public T GetView<T>(Type type, Action<T> init) where T : Component
         {
             if (!Recipes.ContainsKey(type)) throw new Exception($"You don't have a recipe for {type.Name}!");
             var recipe = Recipes[type];
-            return Fusion.Create(type.Name, recipe);
+            var fusion = Fusion.Create(type.Name, recipe);
+            var view = fusion.Get<T>();
+            init(view);
+            return view;
         }
         
-        public T GetView<T>() where T : Component
+        public T GetView<T>(Action<T> init) where T : Component
         {
             var type = typeof(T);
-            var fusion = GetView(type);
-            var view = fusion.Get<T>();
-            return view;
+            return  GetView(type, init);
         }
     }
 }
