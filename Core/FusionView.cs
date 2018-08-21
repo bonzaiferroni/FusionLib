@@ -3,15 +3,8 @@ using UnityEngine;
 
 namespace FusionLib.Core
 {
-    public abstract class FusionView<U> : MonoBehaviour
+    public abstract class FusionView : MonoBehaviour
     {
-        public U Bundle { get; private set; }
-
-        public virtual void Init(U bundle)
-        {
-            Bundle = bundle;
-        }
-
         protected T GetChild<T>(string componentTag) where T : Component
         {
             T comp = null;

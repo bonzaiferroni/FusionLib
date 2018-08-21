@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace FusionLib.Core
 {
-    public abstract class RecipeFactory<U>
+    public abstract class RecipeFactory
     {
         protected abstract Dictionary<Type, Action<Fusion>> Recipes { get; }
-
-        protected abstract void Init(FusionView<U> view, U bundle);
 
         public Fusion GetView(Type type)
         {
@@ -16,23 +15,12 @@ namespace FusionLib.Core
             return Fusion.Create(type.Name, recipe);
         }
         
-        public T GetView<T>(U bundle) where T : FusionView<U>
+        public T GetView<T>() where T : Component
         {
             var type = typeof(T);
             var fusion = GetView(type);
-            
             var view = fusion.Get<T>();
-            BaseInit(view, bundle);
-            Init(view, bundle);
             return view;
-        }
-        
-        protected void BaseInit<T>(T view, U bundle) where T : FusionView<U>
-        {
-            foreach (var fusionView in view.GetComponentsInChildren<FusionView<U>>())
-            {
-                fusionView.Init(bundle);
-            }
         }
     }
 }
