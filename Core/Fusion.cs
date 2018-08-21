@@ -8,14 +8,9 @@ namespace FusionLib.Core
     {
         public static Fusion Create(string name, Action<Fusion> addComponents)
         {
-            var fuser = Create(name);
+            var fuser = new Fusion(name);
             fuser.Add(addComponents);
             return fuser;
-        }
-
-        private static Fusion Create(string name)
-        {
-            return new Fusion(name);
         }
 
         public static Fusion Mount(GameObject go)
@@ -23,14 +18,19 @@ namespace FusionLib.Core
             return new Fusion(go);
         }
 
+        public static Fusion Prefab(string path)
+        {
+            return Mount(LoadResource<GameObject>(path));
+        }
+
         protected Fusion(GameObject go)
         {
             Go = go;
         }
         
-        protected Fusion(string name, params Type[] components)
+        protected Fusion(string name)
         {
-            Go = new GameObject(name, components);
+            Go = new GameObject(name);
         }
 
         public string Name => Go.name;
@@ -98,7 +98,7 @@ namespace FusionLib.Core
 
         public Fusion NewChild(string tag, Action<Fusion> addParts)
         {
-            var child = Create(tag);
+            var child = new Fusion(tag);
             child.Transform.SetParent(Transform);
             child.Add(addParts);
             return child;
