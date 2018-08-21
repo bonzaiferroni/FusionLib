@@ -103,5 +103,12 @@ namespace FusionLib.Core
             child.Add(addParts);
             return child;
         }
+
+        public static T LoadResource<T>(string path) where T : UnityEngine.Object
+        {
+            var resource = Resources.Load<T>(path);
+            if (resource == null) throw new Exception($"Couldn't load {typeof(T)} from path: {path}");
+            return resource;
+        }
     }
 }

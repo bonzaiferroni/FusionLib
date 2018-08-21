@@ -35,7 +35,7 @@ namespace FusionLib.Core
             }
         }
 
-        public T GetView<T>(Type type, Action<T> init) where T : Component
+        public T GetView<T>(Type type, Action<T> init = null) where T : Component
         {
             if (!Recipes.ContainsKey(type)) throw new Exception($"You don't have a recipe for {type.Name}!");
             var pool = _pools[type];
@@ -50,15 +50,17 @@ namespace FusionLib.Core
             {
                 var go = Object.Instantiate(_prototypes[type]);
                 view = go.GetComponent<T>();
-                init(view);
+                init?.Invoke(view);
                 var member = go.GetComponent<PoolMember>();
                 if (member) member.Init(type, this);
+                var initializer = view as IFusionInit;
+                initializer?.Init();
             }
             
             return view;
         }
         
-        public T GetView<T>(Action<T> init) where T : Component
+        public T GetView<T>(Action<T> init = null) where T : Component
         {
             var type = typeof(T);
             return  GetView(type, init);
