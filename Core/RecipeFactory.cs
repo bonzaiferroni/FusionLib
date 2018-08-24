@@ -17,8 +17,8 @@ namespace FusionLib.Core
 
         public RecipeFactory()
         {
-            _prototypesParent = new GameObject("Prototypes").transform;
-            _pooledParent = new GameObject("Pooled").transform;
+            _prototypesParent = new GameObject($"{GetType().Name} Prototypes").transform;
+            _pooledParent = new GameObject($"{GetType().Name} Pooled").transform;
             CreatePrototypes();
         }
 
@@ -30,6 +30,7 @@ namespace FusionLib.Core
                 var type = kvp.Key;
                 var go = Fusion.Create(type.Name, recipe).Go;
                 go.transform.SetParent(_prototypesParent);
+                go.SetActive(false);
                 _prototypes[type] = go;
                 _pools[type] = new Stack<GameObject>();
             }
@@ -49,6 +50,7 @@ namespace FusionLib.Core
             else
             {
                 var go = Object.Instantiate(_prototypes[type]);
+                go.SetActive(true);
                 view = go.GetComponent<T>();
                 init?.Invoke(view);
                 var member = go.GetComponent<PoolMember>();
@@ -71,7 +73,7 @@ namespace FusionLib.Core
             if (!Recipes.ContainsKey(type)) 
                 throw new Exception($"Returned poolmember for unregistered type: {type.Name}");
             _pools[type].Push(poolMember.gameObject);
-            poolMember.transform.SetParent(_pooledParent);
+            poolMember.transform.SetParent(_pooledParent, true);
         }
     }
 }
