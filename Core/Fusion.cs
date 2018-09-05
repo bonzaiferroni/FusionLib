@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace FusionLib.Core
 {
@@ -20,7 +21,7 @@ namespace FusionLib.Core
 
         public static Fusion Prefab(string path)
         {
-            return Mount(LoadResource<GameObject>(path));
+            return Mount(Object.Instantiate(LoadResource<GameObject>(path)));
         }
 
         protected Fusion(GameObject go)
@@ -109,6 +110,12 @@ namespace FusionLib.Core
             var resource = Resources.Load<T>(path);
             if (resource == null) throw new Exception($"Couldn't load {typeof(T)} from path: {path}");
             return resource;
+        }
+
+        public void AddPrefab(string path)
+        {
+            var child = Prefab(path);
+            child.Transform.SetParent(Transform);
         }
     }
 }
