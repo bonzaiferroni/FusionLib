@@ -7,10 +7,10 @@ namespace FusionLib.Core
 {
     public class Fusion
     {
-        public static Fusion Create(string name, Action<Fusion> addComponents)
+        public static Fusion Create(string name, Action<Fusion> addComponents = null)
         {
             var fuser = new Fusion(name);
-            fuser.Add(addComponents);
+            if (addComponents != null) fuser.Add(addComponents);
             return fuser;
         }
 
