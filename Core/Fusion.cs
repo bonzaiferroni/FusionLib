@@ -42,14 +42,7 @@ namespace FusionLib.Core
 
         public Fusion Add(Action<Fusion> addComponents)
         {
-            try
-            {
-                addComponents(this);
-            }
-            catch (Exception e)
-            {
-                Debug.Log($"Exception adding components to {Name}:\n{e}");
-            }
+            addComponents(this);
             
             return this;
         }
@@ -97,11 +90,11 @@ namespace FusionLib.Core
             throw new Exception($"{Name} could find child: {tag}");
         }
 
-        public Fusion NewChild(string tag, Action<Fusion> addParts)
+        public Fusion NewChild(string tag, Action<Fusion> addParts = null)
         {
             var child = new Fusion(tag);
             child.Transform.SetParent(Transform);
-            child.Add(addParts);
+            if (addParts != null) child.Add(addParts);
             return child;
         }
 
