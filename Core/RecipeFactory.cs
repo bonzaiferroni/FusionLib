@@ -54,7 +54,7 @@ namespace FusionLib.Core
                 view = go.GetComponent<T>();
                 init?.Invoke(view);
                 var member = go.GetComponent<PoolMember>();
-                if (member) member.Init(type, this);
+                if (member) member.Init(type, Return);
                 var initializer = view as IFusionInit;
                 initializer?.Init();
             }
